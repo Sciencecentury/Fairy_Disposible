@@ -19,7 +19,7 @@ public class PassTest {
 	/*
 	 * テストコード
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		final String algorithmName = "SHA-256";
 		String password = new java.util.Scanner(System.in).nextLine();
 

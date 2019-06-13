@@ -1,7 +1,8 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.PassTest;
 import model.RegistCheck;
-import model.Users;
+import model.User;
 
 /**
  * @author taiga
@@ -24,13 +25,13 @@ import model.Users;
 @WebServlet("/Regist")
 public class Regist extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	final String algorithmName = "SHA-256";
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public Regist() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -71,14 +72,8 @@ public class Regist extends HttpServlet {
 		 *  アプリケーションスコープに保存されたパスワードを取得
 		 */
 		ServletContext application = getServletContext();
-		Users users = (Users) application.getAttribute("users");
-
-		/**
-		 *  アカウントの初期化
-		 */
-		if(users == null) {
-			users = new Users();
-		}
+		List<User> users = new ArrayList<User>();
+		User user = new User();
 
 		/**
 		 *  リクエストパラメータを取得
@@ -87,56 +82,30 @@ public class Regist extends HttpServlet {
 		String userPass = request.getParameter("userPass");
 
 		/**
-		 * リクエストパラメータが片方入力無ければregistResult.jspに戻す
-		 */
-		if(userName.equals(null) || userPass.equals(null)) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/output/notRegistResult.jsp");
-			dispatcher.forward(request, response);
-		}
-
-		/**
 		 *  SHA-256暗号化のクラスのインスタンス化
 		 */
-		PassTest sha = new PassTest(userPass);
+		PassTest e = new PassTest(algorithmName);
+		byte[] bytes = e.toHashValue(userPass);
+		String result = e.toEncryptedString(bytes);
 
-		HashMap<String,PassTest> user = new HashMap<String,PassTest>();
-		user.put(userName, sha);
-/*		response.setContentType("text/html; charset=UTF-8");
-        PrintWriter out = response.getWriter();
+		user.setUserName(userName);
+		user.setUserPass(result);
 
-		 out.println("<HTML>");
-	        out.println("<BODY>");
-
-	        out.println("名前:" + userName);
-	        out.println("<BR>");
-	        out.println("pass:" + userPass);
-	        out.println("<BR>");
-	        out.println("sha:" + sha);
-
-	        out.println("</BODY>");
-	        out.println("</HTML>");
-	        out.flush();
-	        out.close();
 		/**
 		 *  既存のアカウント確認
 		 */
 		RegistCheck registcheck = new RegistCheck();
-		if(registcheck.Check(user , users)) {
+		if(registcheck.Check(users,user)) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/output/notRegistResult.jsp");
 			dispatcher.forward(request, response);
 
 		}else{
-
-			application.setAttribute("users", user);
+			users.add(users.size(), user);
+			application.setAttribute("user",users);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/output/registResult.jsp");
 			dispatcher.forward(request, response);
 
 		}
-
-
-
-
-
 
 	}
 

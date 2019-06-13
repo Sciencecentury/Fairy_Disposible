@@ -1,14 +1,22 @@
 package model;
 
-import java.util.HashMap;
+import java.util.List;
 
 public class RegistCheck {
 
+	public boolean Check(List<User> users,User user) {
 
-	public boolean Check(HashMap<String,PassTest> user ,Users users) {
-		if(users.getUser().containsKey(user.keySet())){
-			if(users.getUser().containsValue(user.get(user.keySet()))){
-				return true;
+		if(users.isEmpty()){
+			return false;
+		}else{
+			for(User storage : users){
+
+				if(user.getUserName().equals(storage.getUserName())){
+
+					if(user.getUserPass().equals(storage.getUserPass())){
+						return true;
+					}
+				}
 			}
 		}
 		return false;
