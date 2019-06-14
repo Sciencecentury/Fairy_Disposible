@@ -96,7 +96,7 @@ public class Regist extends HttpServlet {
 		 */
 		RegistCheck registcheck = new RegistCheck();
 		if(registcheck.Check(users,user)) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/output/notRegistResult.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/output/RegistResult.jsp");
 			dispatcher.forward(request, response);
 
 		}else{

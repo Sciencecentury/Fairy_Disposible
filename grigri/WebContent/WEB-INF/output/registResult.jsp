@@ -1,12 +1,14 @@
-<%@page import="java.util.ArrayList"%>
-<%@ page import = "model.User" %>
-<%@ page import = "java.util.List;" %>
+<%@ page import ="model.User"%>
+<%@ page import ="model.RegistCheck"%>
+<%@ page import ="java.util.ArrayList"%>
+<%@ page import ="java.util.List"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 <%
-
-	List<User> users = new ArrayList<User>();
+	List<User> users = (ArrayList<User>) application.getAttribute("user");
+	RegistCheck registcheck = new RegistCheck();
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -17,10 +19,20 @@
 </head>
 <body>
 
-	<h1>登録が正常に終了しました</h1>
-	<form action="/grigri/Regist" method ="get">
-		<input type = "submit" value = "戻る">
-	</form>
+	<%if(registcheck.getResult()) { %>
+		<h1>登録に失敗しました</h1>
+
+		<form action="/grigri/Regist" method ="get">
+			<input type = "submit" value = "戻る">
+		</form>
+	<%}else{ %>
+		<h1>登録が正常に終了しました</h1>
+
+		<form action="/grigri/Regist" method ="get">
+			<input type = "submit" value = "戻る">
+		</form>
+
+	<%} %>
 
 </body>
 </html>

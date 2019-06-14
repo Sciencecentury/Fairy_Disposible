@@ -7,8 +7,6 @@ public class User implements Serializable{
 	private String userName,
 				   userPass;
 
-
-
 	public String getUserName() {
 		return userName;
 	}
