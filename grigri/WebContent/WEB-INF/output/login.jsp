@@ -11,7 +11,7 @@
 
 	<h1>GrigriClassRoomへログイン</h1>
 
-	<form action="/grigri/Regist" method = "post">
+	<form action="/grigri/Login" method = "post">
 		ユーザ名：<input type = "text" name = "userName" required><br>
 		パスワード：<input type = "password" name = "userPass" required><br>
 		<input type = "submit" value = "ログイン">

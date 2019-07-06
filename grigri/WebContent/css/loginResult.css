@@ -1,0 +1,40 @@
+#hed{
+	position:absolute;
+	top:10px;
+	right:10px;
+}
+.card {
+  width: 1000px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px #ccc;
+}
+.card-content {
+  padding: 5px;
+}
+.card-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: start;
+  color: #333;
+}
+.card-text {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.5;
+}
+/*
+.card-link {
+  text-align: center;
+  border-top: 1px solid #eee;
+  padding: 20px;
+}
+.card-link a {
+  text-decoration: none;
+  color: #0bd;
+  margin: 0 10px;
+}
+.card-link a:hover {
+  color: #0090aa;
+}
+*/

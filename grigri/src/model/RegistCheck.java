@@ -4,33 +4,17 @@ import java.util.List;
 
 public class RegistCheck {
 
-	private Boolean result;
+	public boolean Check(List<User> users_storage,User user) {
 
-	public boolean Check(List<User> users,User user) {
+		for(User storage : users_storage){
 
-		if(users.isEmpty()){
-			return result = false;
-		}else{
-			for(User storage : users){
+			if(user.getUserName().equals(storage.getUserName())){
 
-				if(user.getUserName().equals(storage.getUserName())){
-
-					if(user.getUserPass().equals(storage.getUserPass())){
-
-						return result = true;
-					}
+				if(user.getUserPass().equals(storage.getUserPass())){
+					return true;
 				}
 			}
 		}
-		return result = false;
+		return false;
 	}
-
-	public Boolean getResult() {
-		return result;
-	}
-
-	public void setResult(Boolean result) {
-		this.result = result;
-	}
-
 }

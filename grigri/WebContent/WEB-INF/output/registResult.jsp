@@ -1,16 +1,11 @@
-<%@ page import ="model.User"%>
-<%@ page import ="model.RegistCheck"%>
-<%@ page import ="java.util.ArrayList"%>
-<%@ page import ="java.util.List"%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="model.Judg"%>
 
 <%
-	List<User> users = (ArrayList<User>) application.getAttribute("user");
-	RegistCheck registcheck = new RegistCheck();
-
+	Judg judg = (Judg) request.getAttribute("judg");
 %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,9 +13,9 @@
 <title>#SPack#</title>
 </head>
 <body>
-
-	<%if(registcheck.getResult()) { %>
-		<h1>登録に失敗しました</h1>
+	<%-- tureの場合　登録弾く　falseの場合　登録 --%>
+	<%if(judg.getJudg()){ %>
+		<h1>登録が失敗しました</h1>
 
 		<form action="/grigri/Regist" method ="get">
 			<input type = "submit" value = "戻る">
