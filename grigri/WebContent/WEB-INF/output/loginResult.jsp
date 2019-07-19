@@ -6,15 +6,14 @@
 <%@ page import="java.util.*"%>
 
 <%
-	Judg judg = (Judg) request.getAttribute("judg");
+	Judg judg = (Judg) session.getAttribute("judg");
 	//Card card = new Card();
 
 	List<User> LoginUser = (ArrayList<User>) application.getAttribute("loginuser");
-	//List<Card> CardStorage = (ArrayList<Card>) application.getAttribute("cardstorage");
 
 	List<String> CardOutputStrage = (ArrayList<String>) application.getAttribute("cardoutput");
 
-
+	String userName = LoginUser.get(judg.getCnt()).getUserName();
 %>
 
 <!DOCTYPE html>
@@ -29,7 +28,7 @@
 
 	<body>
 		<header>
-			<%=LoginUser.get(judg.getCnt()).getUserName() %>さん
+			<%=userName %>さん
 			<div id="hed">
 				<form action="/grigri/index.jsp">
 					<input type="submit" value="ログアウト">
@@ -41,13 +40,16 @@
 
 		<form action="/grigri/Main" method="post">
 			<input type="text" name="projectName" size="100" required>
-			<input type="hidden" name="judg" value="true">
+			<input type="hidden" name="judg_parameter" value="true">
+			<input type="hidden" name="userName" value="<%=userName %>">
 			<input type="submit" value="新規作成">
 		</form>
-
+		<br>
 		<%  if(CardOutputStrage != null){
 				for(String Strage : CardOutputStrage){%>
+				<br>
             		<%= Strage %>
+            	<br>
         <% 		}
 			}%>
 	</body>

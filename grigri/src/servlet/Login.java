@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.Judg;
 import model.LoginCheck;
@@ -48,6 +49,11 @@ public class Login extends HttpServlet {
 		List<User> LoginUser = (ArrayList<User>) application.getAttribute("loginuser");
 		List<User> users = new ArrayList<User>();
 
+		/**
+		 *  セッションスコープ
+		 */
+		HttpSession session = request.getSession();
+
 		Judg judg = new Judg();
 		judg.cnt();
 		LoginCheck login = new LoginCheck();
@@ -82,7 +88,7 @@ public class Login extends HttpServlet {
 			 *  何も登録されていない場合の処理
 			 */
 			judg.setJudg(false);
-			request.setAttribute("judg",judg);
+			session.setAttribute("judg",judg);
 			dispatcher.forward(request, response);
 		}else if(LoginUser == null){
 			/**
@@ -92,14 +98,12 @@ public class Login extends HttpServlet {
 			application.setAttribute("loginuser",users);
 			if(login.Check(UsersStorage, users)){
 				judg.setJudg(true);
-				request.setAttribute("judg",judg);
-				dispatcher.forward(request, response);
+				session.setAttribute("judg",judg);
 			}else {
 				judg.setJudg(false);
-				request.setAttribute("judg",judg);
-				dispatcher.forward(request, response);
+				session.setAttribute("judg",judg);
 			}
-
+			dispatcher.forward(request, response);
 		}else{
 			/**
 			 *  ログインユーザ一覧も
@@ -109,12 +113,10 @@ public class Login extends HttpServlet {
 
 				if(login.Check(UsersStorage, users)){
 					judg.setJudg(true);
-					request.setAttribute("judg",judg);
-					dispatcher.forward(request, response);
+					session.setAttribute("judg",judg);
 				}else {
 					judg.setJudg(false);
-					request.setAttribute("judg",judg);
-					dispatcher.forward(request, response);
+					session.setAttribute("judg",judg);
 				}
 			}else{
 
@@ -122,14 +124,13 @@ public class Login extends HttpServlet {
 
 				if(login.Check(UsersStorage, users)){
 					judg.setJudg(true);
-					request.setAttribute("judg",judg);
-					dispatcher.forward(request, response);
+					session.setAttribute("judg",judg);
 				}else {
 					judg.setJudg(false);
-					request.setAttribute("judg",judg);
-					dispatcher.forward(request, response);
+					session.setAttribute("judg",judg);
 				}
 			}
+			dispatcher.forward(request, response);
 		}
 	}
 }

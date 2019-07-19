@@ -7,7 +7,7 @@
   width: 1000px;
   background: #fff;
   border-radius: 5px;
-  box-shadow: 0 2px 5px #ccc;
+  box-shadow: 5px 5px 10px #ccc;
 }
 .card-content {
   padding: 5px;
@@ -22,6 +22,9 @@
   color: #777;
   font-size: 14px;
   line-height: 1.5;
+}
+#gap{
+	padding: 3px;
 }
 /*
 .card-link {
