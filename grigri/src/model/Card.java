@@ -10,7 +10,8 @@ public class Card implements Serializable{
 
 	private String title,
 				   botton;
-	private List<Task> taskSummary = new ArrayList<Task>();
+	private List<String> taskSummary = new ArrayList<String>();
+	private List<Task> taskStrage = new ArrayList<Task>();
 
 	private int cardNumber;
 
@@ -28,12 +29,20 @@ public class Card implements Serializable{
 		this.botton = botton;
 	}
 
-	public List<Task> getTaskSummary() {
+	public List<String> getTaskSummary() {
 		return taskSummary;
 	}
-	public void setTaskSummary(List<Task> taskSummary) {
+	public void setTaskSummary(List<String> taskSummary) {
 		this.taskSummary = taskSummary;
 	}
+
+	public List<Task> getTaskStrage() {
+		return taskStrage;
+	}
+	public void setTaskStrage(List<Task> taskStrage) {
+		this.taskStrage = taskStrage;
+	}
+
 /**
  * cardNumberはインスタンスにしたカードを判別するもの
  */
@@ -49,15 +58,11 @@ public class Card implements Serializable{
 	public Card(){
 		cardNumber = 0;
 		title = "provisional";
-		taskSummary.add(0,task);
+		//taskSummary.add(0,"<div class='task'>"+taskStrage.get(0).getTaskTitle()+"</div>");
+		taskStrage.add(0,task);
 		botton = "<form action='/grigri/Main'><input type='hidden' name='cardNumber'value="
 				  +cardNumber+"><input type='hidden' name='move' value='cts'>"
-				  + "<input type='submit' value='新規課題作成'></form>";
+				  + "<input type='submit' name='card' value='新規課題作成'></form>";
 	}
 
-	public void writeTask(String title,String name,String contents){
-		task.setTaskTitle(title);
-		task.setAuthorName(name);
-		task.setTaskContents(contents);
-	}
 }

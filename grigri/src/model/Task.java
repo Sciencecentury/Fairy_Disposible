@@ -30,7 +30,7 @@ public class Task {
 	}
 
 	public Task(){
-		taskTitle = "provisional";
+		taskTitle = "タスクを追加してください";
 		authorName = "provisional";
 		taskContents = "provisional";
 	}

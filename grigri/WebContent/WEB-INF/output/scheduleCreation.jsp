@@ -25,7 +25,9 @@
 		<input type="text" name="taskTitle" size="100" placeholder="課題名を入力してください"required><br><br>
 		<textarea id="taskContents" name="taskContents" cols="100" rows="20" maxlength="200"
 		 placeholder="課題内容を入力してください"required></textarea><br>
-		<input type="submit" value="作成"><br>
+		<input type="hidden" name="judg_parameter" value="true">
+		<input type="hidden" name="cardNumber" value=<%=cardNumber %>>
+		<input type="submit" name="scheduleCreation" value="作成"><br>
 	</form>
 
 	<a href="/grigri/Main">＜＜戻る</a>

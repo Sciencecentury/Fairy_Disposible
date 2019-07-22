@@ -72,6 +72,7 @@ public class Main extends HttpServlet {
 		ServletContext application = getServletContext();
 		List<Card> CardStorage = (ArrayList<Card>) application.getAttribute("cardstorage");
 		List<String> CardOutputStrage = (ArrayList<String>) application.getAttribute("cardoutput");
+//		List<Task> TaskStrage = (ArrayList<Task>) application.getAttribute("taskstrage");
 
 
 		String projectName = request.getParameter("projectName");
@@ -82,48 +83,70 @@ public class Main extends HttpServlet {
  */
 		if(judg_parameter.equals("true")){
 			card.setTitle(projectName);
-			card.setCardNumber(card.getCardNumber()+1);
+			card.setCardNumber(0);
 /**
  * カードを保存しているListに何も入ってない場合
  */
-			if(CardStorage == null){
+			if(CardStorage == null && request.getParameter("scheduleCreation") == null){
+
 				List<String> CardOutput = new ArrayList<String>();
 				List<Card> CardStrageList = new ArrayList<Card>();
+
+				CardOutput.add(0,"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
+								+card.getTitle()+"</h1></div>"+card.getTaskStrage().get(0).getTaskTitle()+"<br>"+card.getBotton()+"</div></div>");
+				application.setAttribute("cardoutput", CardOutput);
 
 				CardStrageList.add(0,card);
 				application.setAttribute("cardstorage", CardStrageList);
 
-				CardOutput.add(0,"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
-								+card.getTitle()+"</h1></div>"+card.getTaskSummary().get(0)+"<br>"+card.getBotton()+"</div></div>");
-				application.setAttribute("cardoutput", CardOutput);
-
 				dispatcher.forward(request, response);
-			}else{
-/**
- * カードを保存しているListに何かある場合
- */
-				CardOutputStrage.add(CardOutputStrage.size(),"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
-									+card.getTitle()+"</h1></div>"+card.getTaskSummary().get(0)+"<br>"+card.getBotton()+"</div></div>");
 
-				CardStorage.add(CardStorage.size(),card);
-				dispatcher.forward(request, response);
-			}
+			}else if(request.getParameter("card") == null && request.getParameter("scheduleCreation") != null){
 
-		}
-
+				List<Task> TaskStrageList = new ArrayList<Task>();
+				List<String> TaskOutputList = new ArrayList<String>();
 /**
  *  課題追加処理
  */
-		String taskTitle = request.getParameter("taskTitle");
-		String userName = request.getParameter("userName");
-		String taskContents = request.getParameter("taskContents");
+				String taskTitle = request.getParameter("taskTitle");
+				String userName = request.getParameter("userName");
+				String taskContents = request.getParameter("taskContents");
+				int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
 
-		for(Card strage  :CardStorage){
-			if(strage.getCardNumber() == 0){
-				strage.writeTask(taskTitle, userName , taskContents);
-				strage.getTaskSummary().add(task);
+				task.setTaskTitle(taskTitle);
+				task.setAuthorName(userName);
+				task.setTaskContents(taskContents);
+
+				for(Card strage : CardStorage){
+					int cnt = 0;
+
+					if(strage.getCardNumber() == cardNumber){
+						TaskStrageList.add(cnt,task);
+						strage.setTaskStrage(TaskStrageList);
+						TaskOutputList.add(cnt,"<div class='task>"+task.getTaskTitle()+"</div>");
+						strage.setTaskSummary(TaskOutputList);
+						cnt++;
+					}
+
+				}
+				dispatcher.forward(request, response);
+
+			}else if(request.getParameter("card") != null || request.getParameter("scheduleCreation") == null){
+/**
+ * カードを保存しているListに何かある場合
+ */
+				card.setCardNumber(CardStorage.size()-1);
+				CardOutputStrage.add(CardStorage.size(),"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
+									+card.getTitle()+"</h1></div>"+card.getTaskStrage().get(card.getCardNumber()).getTaskTitle()+
+									"<br>"+card.getBotton()+"</div></div>");
+
+				CardStorage.add(CardStorage.size(),card);
+
+				dispatcher.forward(request, response);
 			}
+
 		}
+
 	}
 
 }
