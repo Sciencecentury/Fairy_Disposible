@@ -4,11 +4,11 @@ public class Task {
 	private String taskTitle,
 				   authorName,
 				   taskContents;
+	private int cardNumber;
 
 	public String getTaskTitle() {
 		return taskTitle;
 	}
-
 	public void setTaskTitle(String taskTitle) {
 		this.taskTitle = taskTitle;
 	}
@@ -16,7 +16,6 @@ public class Task {
 	public String getAuthorName() {
 		return authorName;
 	}
-
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
 	}
@@ -24,9 +23,15 @@ public class Task {
 	public String getTaskContents() {
 		return taskContents;
 	}
-
 	public void setTaskContents(String taskContents) {
 		this.taskContents = taskContents;
+	}
+
+	public int getCardNumber() {
+		return cardNumber;
+	}
+	public void setCardNumber(int cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
 	public Task(){

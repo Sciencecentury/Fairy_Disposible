@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +61,8 @@ public class Main extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/output/loginResult.jsp");
-//		response.setContentType("text/html; charset=UTF-8");
-//		PrintWriter out = response.getWriter();
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
 
 		Card card = new Card();
 		Task task = new Task();
@@ -93,7 +94,7 @@ public class Main extends HttpServlet {
 				List<Card> CardStrageList = new ArrayList<Card>();
 
 				CardOutput.add(0,"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
-								+card.getTitle()+"</h1></div>"+card.getTaskStrage().get(0).getTaskTitle()+"<br>"+card.getBotton()+"</div></div>");
+								+card.getTitle()+"</h1></div>"+task.getTaskTitle()+"<br>"+card.getBotton()+"</div></div>");
 				application.setAttribute("cardoutput", CardOutput);
 
 				CardStrageList.add(0,card);
@@ -117,30 +118,32 @@ public class Main extends HttpServlet {
 				task.setAuthorName(userName);
 				task.setTaskContents(taskContents);
 
-				for(Card strage : CardStorage){
 					int cnt = 0;
 
-					if(strage.getCardNumber() == cardNumber){
-						TaskStrageList.add(cnt,task);
-						strage.setTaskStrage(TaskStrageList);
-						TaskOutputList.add(cnt,"<div class='task>"+task.getTaskTitle()+"</div>");
-						strage.setTaskSummary(TaskOutputList);
-						cnt++;
-					}
 
-				}
+						TaskStrageList.add(cnt,task);
+
+						TaskOutputList.add(cnt,"<div class='task>"+task.getTaskTitle()+"</div>");
+
+						cnt++;
+					System.out.println(task.getTaskTitle());
+
+
 				dispatcher.forward(request, response);
 
 			}else if(request.getParameter("card") != null || request.getParameter("scheduleCreation") == null){
 /**
  * カードを保存しているListに何かある場合
  */
-				card.setCardNumber(CardStorage.size()-1);
-				CardOutputStrage.add(CardStorage.size(),"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
-									+card.getTitle()+"</h1></div>"+card.getTaskStrage().get(card.getCardNumber()).getTaskTitle()+
-									"<br>"+card.getBotton()+"</div></div>");
-
+				card.setCardNumber(CardStorage.size());
+				System.out.println(card.getCardNumber());
 				CardStorage.add(CardStorage.size(),card);
+
+				System.out.println(card.getTitle());
+				card.bottonReload();
+				CardOutputStrage.add(card.getCardNumber(),"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
+									+card.getTitle()+"</h1></div>"+task.getTaskTitle()+
+									"<br>"+card.getBotton()+"</div></div>");
 
 				dispatcher.forward(request, response);
 			}
