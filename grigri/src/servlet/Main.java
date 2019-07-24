@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,11 @@ public class Main extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		if(request.getParameter("move") != null) {
+		if(request.getParameter("card") != null) {
+			int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
+			String userName = request.getParameter("userName");
+			request.setAttribute("cardNumber", cardNumber);
+			request.setAttribute("userName", userName);
 			dispatcher = request.getRequestDispatcher("/WEB-INF/output/scheduleCreation.jsp");
 			dispatcher.forward(request, response);
 
@@ -61,8 +64,12 @@ public class Main extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/output/loginResult.jsp");
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
+//		response.setContentType("text/html; charset=UTF-8");
+//		PrintWriter out = response.getWriter();
+
+		String projectName = request.getParameter("projectName");
+		String judg_parameter = request.getParameter("judg_parameter");
+		String userName = request.getParameter("userName");
 
 		Card card = new Card();
 		Task task = new Task();
@@ -71,13 +78,10 @@ public class Main extends HttpServlet {
  * CardOutputStrageは cardを出力するためのHTML文を保存
  */
 		ServletContext application = getServletContext();
-		List<Card> CardStorage = (ArrayList<Card>) application.getAttribute("cardstorage");
-		List<String> CardOutputStrage = (ArrayList<String>) application.getAttribute("cardoutput");
-//		List<Task> TaskStrage = (ArrayList<Task>) application.getAttribute("taskstrage");
+		List<Card> CardStrage = (ArrayList<Card>) application.getAttribute("cardstrage");
+		List<Task> TaskStrage = (ArrayList<Task>) application.getAttribute("taskstrage");
 
-
-		String projectName = request.getParameter("projectName");
-		String judg_parameter = request.getParameter("judg_parameter");
+		List<Card> CardStrageList = new ArrayList<Card>();
 
 /**
  * 正常にログインが出来ている場合
@@ -88,46 +92,49 @@ public class Main extends HttpServlet {
 /**
  * カードを保存しているListに何も入ってない場合
  */
-			if(CardStorage == null && request.getParameter("scheduleCreation") == null){
-
-				List<String> CardOutput = new ArrayList<String>();
-				List<Card> CardStrageList = new ArrayList<Card>();
-
-				CardOutput.add(0,"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
-								+card.getTitle()+"</h1></div>"+task.getTaskTitle()+"<br>"+card.getBotton()+"</div></div>");
-				application.setAttribute("cardoutput", CardOutput);
+			if(CardStrage == null && request.getParameter("scheduleCreation") == null){
 
 				CardStrageList.add(0,card);
-				application.setAttribute("cardstorage", CardStrageList);
-
+				application.setAttribute("cardstrage", CardStrageList);
+				List<Card> CardStragea = (ArrayList<Card>) application.getAttribute("cardstrage");
+				System.out.println("1"+CardStragea.get(0).getCardNumber());
 				dispatcher.forward(request, response);
 
 			}else if(request.getParameter("card") == null && request.getParameter("scheduleCreation") != null){
 
 				List<Task> TaskStrageList = new ArrayList<Task>();
-				List<String> TaskOutputList = new ArrayList<String>();
 /**
  *  課題追加処理
  */
 				String taskTitle = request.getParameter("taskTitle");
-				String userName = request.getParameter("userName");
 				String taskContents = request.getParameter("taskContents");
 				int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
 
 				task.setTaskTitle(taskTitle);
-				task.setAuthorName(userName);
 				task.setTaskContents(taskContents);
 
-					int cnt = 0;
+				if(TaskStrage == null){
 
+					for(Card strage : CardStrage){
+						if(strage.getCardNumber() == cardNumber){
 
-						TaskStrageList.add(cnt,task);
+							task.setCardNumber(cardNumber);
+							TaskStrageList.add(task);
 
-						TaskOutputList.add(cnt,"<div class='task>"+task.getTaskTitle()+"</div>");
+							application.setAttribute("taskstrage", TaskStrageList);
+						}
+					}
+					dispatcher.forward(request, response);
+				}else{
+					for(Card strage : CardStrage){
+						if(strage.getCardNumber() == cardNumber){
 
-						cnt++;
-					System.out.println(task.getTaskTitle());
+							task.setCardNumber(cardNumber);
+							TaskStrage.add(task);
+						}
+					}
 
+				}
 
 				dispatcher.forward(request, response);
 
@@ -135,16 +142,8 @@ public class Main extends HttpServlet {
 /**
  * カードを保存しているListに何かある場合
  */
-				card.setCardNumber(CardStorage.size());
-				System.out.println(card.getCardNumber());
-				CardStorage.add(CardStorage.size(),card);
-
-				System.out.println(card.getTitle());
-				card.bottonReload();
-				CardOutputStrage.add(card.getCardNumber(),"<div id='gap'><section class='card'><div class='card-content'><h1 class='card-title'>"
-									+card.getTitle()+"</h1></div>"+task.getTaskTitle()+
-									"<br>"+card.getBotton()+"</div></div>");
-
+				card.setCardNumber(CardStrage.size());
+				CardStrage.add(CardStrage.size(),card);
 				dispatcher.forward(request, response);
 			}
 

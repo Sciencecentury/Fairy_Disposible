@@ -2,7 +2,6 @@ package model;
 
 public class Task {
 	private String taskTitle,
-				   authorName,
 				   taskContents;
 	private int cardNumber;
 
@@ -11,13 +10,6 @@ public class Task {
 	}
 	public void setTaskTitle(String taskTitle) {
 		this.taskTitle = taskTitle;
-	}
-
-	public String getAuthorName() {
-		return authorName;
-	}
-	public void setAuthorName(String authorName) {
-		this.authorName = authorName;
 	}
 
 	public String getTaskContents() {
@@ -36,7 +28,6 @@ public class Task {
 
 	public Task(){
 		taskTitle = "タスクを追加してください";
-		authorName = "provisional";
 		taskContents = "provisional";
 	}
 }

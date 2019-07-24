@@ -4,9 +4,9 @@
 <%@ page import="model.Card"%>
 <%@ page import="java.util.*"%>
 <%
-	int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
-	List<Card> CardStorage = (ArrayList<Card>) application.getAttribute("cardstorage");
-
+	int cardNumber = (Integer) request.getAttribute("cardNumber");
+	List<Card> CardStrage = (ArrayList<Card>) application.getAttribute("cardstrage");
+	System.out.print(cardNumber);
 %>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@
 
 	<h1>課題登録画面</h1>
 	<br>
-	<h2><%= CardStorage.get(cardNumber).getTitle() %></h2>
+	<h2><%= CardStrage.get(cardNumber).getTitle() %></h2>
 
 	<form action="/grigri/Main" method="post" id="taskContents">
 		<input type="text" name="taskTitle" size="100" placeholder="課題名を入力してください"required><br><br>
@@ -30,6 +30,6 @@
 		<input type="submit" name="scheduleCreation" value="作成"><br>
 	</form>
 
-	<a href="/grigri/Main">＜＜戻る</a>
+	<a href="/grigri/Main" method="get">＜＜戻る</a>
 </body>
 </html>

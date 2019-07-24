@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 public class Card implements Serializable{
 
+	Task task = new Task();
 	private String title,
 				   botton;
 
 	private int cardNumber;
+
 
 	public String getTitle() {
 		return title;
@@ -16,12 +18,6 @@ public class Card implements Serializable{
 		this.title = title;
 	}
 
-	public String getBotton() {
-		return botton;
-	}
-	public void setBotton(String botton) {
-		this.botton = botton;
-	}
 
 /**
  * cardNumberはインスタンスにしたカードを判別するもの
@@ -37,14 +33,7 @@ public class Card implements Serializable{
  */
 	public Card(){
 		title = "provisional";
-		botton = "<form action='/grigri/Main'><input type='hidden' name='cardNumber'value="
-				  +this.cardNumber+"><input type='hidden' name='move' value='cts'>"
-				  + "<input type='submit' name='card' value='新規課題作成'></form>";
+		cardNumber = 0;
 	}
 
-	public void bottonReload(){
-		botton = "<form action='/grigri/Main'><input type='hidden' name='cardNumber'value="
-				  +this.cardNumber+"><input type='hidden' name='move' value='cts'>"
-				  + "<input type='submit' name='card' value='新規課題作成'></form>";
-	}
 }

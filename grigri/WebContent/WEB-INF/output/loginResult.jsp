@@ -3,17 +3,22 @@
 <%@ page import="model.Judg"%>
 <%@ page import="model.User"%>
 <%@ page import="model.Card"%>
+<%@ page import="model.Task"%>
 <%@ page import="java.util.*"%>
 
 <%
 	Judg judg = (Judg) session.getAttribute("judg");
-	//Card card = new Card();
+
 
 	List<User> LoginUser = (ArrayList<User>) application.getAttribute("loginuser");
 
-	List<String> CardOutputStrage = (ArrayList<String>) application.getAttribute("cardoutput");
+	List<Card> CardStrage = (ArrayList<Card>) application.getAttribute("cardstrage");
+	List<Task> TaskStrage = (ArrayList<Task>) application.getAttribute("taskstrage");
 
 	String userName = LoginUser.get(judg.getCnt()).getUserName();
+	Task task = new Task();
+
+	int cnt = 0;
 %>
 
 <!DOCTYPE html>
@@ -41,17 +46,45 @@
 		<form action="/grigri/Main" method="post">
 			<input type="text" name="projectName" size="100" required>
 			<input type="hidden" name="judg_parameter" value="true">
-			<input type="hidden" name="userName" value="<%=userName %>">
 			<input type="submit" value="新規作成">
 		</form>
 		<br>
-		<%  if(CardOutputStrage != null){
-				for(String Strage : CardOutputStrage){%>
-				<br>
-            		<%= Strage %>
-            	<br>
-        <% 		}
-			}%>
+
+
+		<%  if(CardStrage != null){%>
+
+			<% 	for(Card card : CardStrage){%>
+		<div id='gap'>
+			<section class='card'>
+				<div class='card-content'>
+					<h1 class='card-title'>
+					<%=card.getTitle() %>
+            		</h1>
+
+					<%if(TaskStrage != null){
+						for(Task tstrage : TaskStrage){
+							if(card.getCardNumber() == tstrage.getCardNumber()){%>
+							<div id="task" onclick="location.href = /WEB-INF/output/confirmation.jsp">
+            					<%=tstrage.getTaskTitle()%>
+            					<div class="name">
+            						作成者：<%=userName %>
+            					</div>
+            				</div>
+            		<%		}
+            			}
+            		}%>
+            	</div>
+            	<form action='/grigri/Main' method="get">
+            		<input type='hidden' name='cardNumber'value='<%=card.getCardNumber() %>'>
+            		<input type="hidden" name="userName" value="<%=userName %>">
+            		<input type='submit' name='card' value='新規課題作成'>
+            	</form>
+            </section>
+        </div><br>
+        <%	}
+        }%>
+
+
 	</body>
 
 <%}else{ %>
@@ -67,4 +100,7 @@
 	</body>
 
 <%} %>
+<script type="text/javascript">
+
+</script>
 </html>
